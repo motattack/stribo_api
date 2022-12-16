@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 
 from authentication.models import User
 
+from authentication.serializers import UserSerializer
+
 
 class RegisterView(APIView):
     @staticmethod
@@ -26,7 +28,8 @@ class RegisterView(APIView):
             user = User.objects.create_user(data.get('email'), data.get('password'))
             token = Token.objects.create(user=user)
             return JsonResponse({'success': 'Пользователь успешно зарегистрирован',
-                                 'token': token.key},
+                                 'token': token.key,
+                                 'user': UserSerializer(user).data},
                                 status=201)
         except IntegrityError:
             return JsonResponse({'error': 'Пользователь с таким E-mail уже существует'},
@@ -41,7 +44,8 @@ class LoginView(APIView):
                             password=data['password'])
         if user:
             return JsonResponse({'status': 'ok',
-                                 'token': user.auth_token.key},
+                                 'token': user.auth_token.key,
+                                 'user': UserSerializer(user).data},
                                 status=200)
         else:
             return JsonResponse({'status': 'error',
@@ -54,7 +58,8 @@ class TokenView(APIView):
     def post(request):
         token = request.data.get('token')
         if Token.objects.filter(key=token).exists():
-            return JsonResponse({'status': 'ok'},
+            return JsonResponse({'status': 'ok',
+                                 'user': UserSerializer(Token.objects.get(key=token).user).data},
                                 status=200)
         else:
             return JsonResponse({'status': 'error',

@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from .models import Comment
 from .permissions import IsOwnerOrReadOnly
-from .serizalizers import CommentSerializer
+from .serializers import CommentSerializer
 
 
 # Create your views here.
