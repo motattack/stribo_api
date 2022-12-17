@@ -6,11 +6,20 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    token = SerializerMethodField()
+    auth_token = SerializerMethodField('get_auth_token')
 
     class Meta:
         model = User
-        fields = ('name', 'email', 'last_login', 'token', 'level', 'exp', 'needExpToNextLevel')
+        fields = ('auth_token', 'name', 'email', 'level', 'exp', 'needExpToNextLevel', 'last_login', 'password')
+        extra_kwargs = {'password': {'write_only': True}}
 
-    def get_token(self, obj):
+    def get_auth_token(self, obj):
         return Token.objects.get(user=obj).key
+
+    def create(self, validated_data):
+        user = User(
+            email=validated_data['email'],
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user

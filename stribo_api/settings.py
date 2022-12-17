@@ -150,6 +150,13 @@ REST_FRAMEWORK = {
     ],
 }
 
+# DJOSER
+DJOSER = {
+    'SERIALIZERS': {
+        'user_create': 'authentication.serializers.UserSerializer',
+    },
+}
+
 # DANGER ZONE - CORS
 CORS_ORIGIN_ALLOW_ALL = DEBUG
 
