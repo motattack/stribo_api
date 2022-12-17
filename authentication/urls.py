@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import include, path
 
-from .views import LoginView, TokenView, RegisterView
+from .views import ProfileView
 
 urlpatterns = [
-    path('reg/', RegisterView.as_view(), name='reg'),
-    path('login/', LoginView.as_view(), name='login'),
-    path('token/', TokenView.as_view(), name='token'),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
+    path('auth/profile/', ProfileView.as_view()),
 ]

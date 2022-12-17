@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
+from django.db import models
+from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
@@ -20,6 +21,8 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        Token.objects.create(user=user)
         return user
 
     def create_superuser(self, email, name="", password=None):
@@ -32,8 +35,11 @@ class UserManager(BaseUserManager):
             password=password,
             name=name,
         )
+
         user.is_admin = True
         user.save(using=self._db)
+
+        Token.objects.create(user=user)
         return user
 
 
@@ -46,6 +52,9 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=255, null=True, verbose_name="Имя")
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False, verbose_name="Админ")
+    level = models.IntegerField(default=0, verbose_name="Уровень")
+    exp = models.IntegerField(default=0, verbose_name="Опыт")
+    needExpToNextLevel = models.IntegerField(default=0, verbose_name="Опыт до следующего уровня")
 
     objects = UserManager()
 
