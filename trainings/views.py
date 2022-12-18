@@ -24,7 +24,8 @@ class TrainingsViewSet(ModelViewSet):
 
 class testView(APIView):
     def get(self, request):
-        return Response({'message': request.query_params.get('message')})
+        # html code
+        return render(request, 'index.html')
 
     def post(self, request):
         # return json response with data from request

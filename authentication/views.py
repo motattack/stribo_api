@@ -17,3 +17,13 @@ class ProfileView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors)
+
+
+class WhoamiView(APIView):
+    def get(self, request):
+        print(request.body)
+        return Response(request.body)
+
+    def post(self, request):
+        print(request.body)
+        return Response(request.body)
