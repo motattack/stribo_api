@@ -23,3 +23,24 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class UserRankingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('name', 'level')
+
+
+class ExpSerializer(serializers.Serializer):
+    exp = serializers.IntegerField()
+
+    class Meta:
+        model = User
+        fields = ('exp',)
+
+    def create(self, validated_data):
+        return validated_data
+
+    def update(self, instance, validated_data):
+        instance.exp = validated_data.get('exp', instance.exp)
+        return instance

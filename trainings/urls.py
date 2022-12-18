@@ -1,11 +1,10 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import TrainingsViewSet, testView
+from trainings.views import TrainingViewSet
 
-r = DefaultRouter()
-r.register('trainings', TrainingsViewSet)
+router = DefaultRouter()
+router.register(r'', TrainingViewSet, basename='trainings')
 
 urlpatterns = [
-    path('test/', testView.as_view()),
-] + r.urls
+              ] + router.urls

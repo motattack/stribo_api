@@ -1,7 +1,9 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer
+
+from .models import User
+from .serializers import UserSerializer, UserRankingSerializer
 
 
 class ProfileView(APIView):
@@ -27,3 +29,10 @@ class WhoamiView(APIView):
     def post(self, request):
         print(request.body)
         return Response(request.body)
+
+
+class TopFiveRankingView(APIView):
+    def get(self, request):
+        queryset = User.objects.all().order_by('-level')[:5]
+        serializer = UserRankingSerializer(queryset, many=True)
+        return Response(serializer.data)

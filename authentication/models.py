@@ -56,7 +56,7 @@ class User(AbstractBaseUser):
     is_admin = models.BooleanField(default=False, verbose_name="Админ")
     level = models.IntegerField(default=0, verbose_name="Уровень")
     exp = models.IntegerField(default=0, verbose_name="Опыт")
-    needExpToNextLevel = models.IntegerField(default=0, verbose_name="Опыт до следующего уровня")
+    needExpToNextLevel = models.IntegerField(default=10, verbose_name="Опыт до следующего уровня")
 
     objects = UserManager()
 
