@@ -154,6 +154,8 @@ REST_FRAMEWORK = {
 DJOSER = {
     'SERIALIZERS': {
         'user_create': 'authentication.serializers.UserSerializer',
+        'user': 'authentication.serializers.UserSerializer',
+        'user_delete': 'authentication.serializers.UserSerializer',
     },
 }
 
