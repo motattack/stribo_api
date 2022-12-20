@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser
 )
@@ -58,6 +60,9 @@ class User(AbstractBaseUser):
     exp = models.IntegerField(default=0, verbose_name="Опыт")
     needExpToNextLevel = models.IntegerField(default=10, verbose_name="Опыт до следующего уровня")
 
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -65,6 +70,10 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+    def total_days(self):
+        remaining = (datetime.now().date() - self.created_at.date()).days
+        return remaining
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -81,6 +90,15 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def recalculate_experience(self, exp):
+        if (self.exp + exp) >= self.needExpToNextLevel:
+            self.exp = (self.exp + exp) - self.needExpToNextLevel
+            self.level += 1
+            self.needExpToNextLevel = self.needExpToNextLevel * 2
+        else:
+            self.exp += exp
+        self.save()
 
     class Meta:
         verbose_name = "Пользователь"

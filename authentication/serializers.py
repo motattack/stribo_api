@@ -36,9 +36,21 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserRankingSerializer(serializers.ModelSerializer):
+    total_time = SerializerMethodField('get_total_time')
+    name = SerializerMethodField('get_name')
+
     class Meta:
         model = User
-        fields = ('name', 'level')
+        fields = ('name', 'level', 'exp', 'needExpToNextLevel', 'total_time')
+
+    def get_total_time(self, obj):
+        return obj.total_days()
+
+    def get_name(self, obj):
+        if obj.name == '' or obj.name is None:
+            return 'Аноним'
+        else:
+            return obj.name
 
 
 class ExpSerializer(serializers.Serializer):
