@@ -30,7 +30,10 @@ class UserSerializer(serializers.ModelSerializer):
         instance.exp = validated_data.get('exp', instance.exp)
         instance.needExpToNextLevel = validated_data.get('needExpToNextLevel', instance.needExpToNextLevel)
         instance.last_login = validated_data.get('last_login', instance.last_login)
-        instance.set_password(validated_data.get('password', instance.password))
+
+        if validated_data.get('password', None):
+            instance.set_password(validated_data['password'])
+
         instance.save()
         return instance
 
