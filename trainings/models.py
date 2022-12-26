@@ -22,6 +22,10 @@ class Training(models.Model):
         user.recalculate_experience(self.count_exp())
         user.save()
 
+    class Meta:
+        verbose_name = "Тренировку"
+        verbose_name_plural = "Тренировок"
+
 
 class Exercise(models.Model):
     name = models.CharField(max_length=200)
@@ -32,6 +36,10 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = "Упражнение"
+        verbose_name_plural = "Упражнений"
+
 
 class TrainingExercise(models.Model):
     training = models.ForeignKey(Training, on_delete=models.CASCADE)
@@ -40,3 +48,7 @@ class TrainingExercise(models.Model):
 
     def __str__(self):
         return f'{self.training} - {self.exercise}'
+
+    class Meta:
+        verbose_name = "Упражнение к Тренировке"
+        verbose_name_plural = "Упражнений к Тренировкам"

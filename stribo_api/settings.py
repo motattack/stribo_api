@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'authentication',
     'trainings',
     'django_filters',
-    'comments',
     'djoser',
 ]
 
